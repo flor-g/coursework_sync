@@ -1,0 +1,76 @@
+# The school and the courses coursework_sync tracks.
+#
+# This is an example: replace it with your own. Each sync makes Notion's Courses database match
+# this file: it adds new courses, updates the ones listed, and archives courses you remove (their
+# pages and history stay in Notion; they just stop syncing). See courses/README.md.
+
+[school]
+name = "Example University"
+term = "Fall 2026"
+timezone = "America/New_York"
+# Your school's Canvas site. The token for it is the COURSEWORKTOK repository secret.
+canvas_url = "https://canvas.example.edu"
+# Ed Discussion's region: the part after edstem.org/ in your Ed links ("us" or "au").
+ed_region = "us"
+# Email subjects that mark a post from course staff, as regular expressions (case doesn't matter).
+# Used when Claude isn't available; Claude judges this itself.
+#   [ANN]        a course mailing-list announcement, e.g. "[cs3157] [ANN] Lab 4 released"
+#   CS 3134 …    an Ed or Canvas announcement, which starts with the course code
+staff_subjects = ['\[ann\]', '^\s*[A-Z]{2,5}\s?[A-Z]{0,2}\d{4}\b']
+
+# The Notion data sources the sync writes to. These are ids, not secrets; docs/notion-setup.md
+# says how to create the databases and find their ids.
+[notion]
+courses = ""
+assignments = ""
+lectures = ""
+updates = ""
+code = ""
+
+# One [[course]] block per course. Only `name` and `code` are required.
+#
+#   name           what Notion calls the course
+#   code           the course code; also used to find the course on Canvas and Ed
+#   instructor     shown on the course page and in converted lecture notes
+#   website        the course website; it needs a reader in courses/sites/ that matches the URL
+#   canvas_id      the Canvas course id (the number in .../courses/12345). Leave it out and the
+#                  sync finds the course by its code
+#   gmail_query    a Gmail search for the course's emails. Leave it out for the default:
+#                  the code in its usual spellings ("CS 3134" OR "CS3134")
+#   ed_url         the course's Ed Discussion page. The sync also finds it on Ed by the code
+#   meeting_times, office_hours   free text for the course page
+#   aliases        other names the course uses for its assignments, on Ed or in emails, mapped to
+#                  the name in Notion: { P = "Programming Assignment" } makes "P4" mean
+#                  "Programming Assignment 4"
+#
+# Exams that Canvas and the course website don't list go at the end of the course's block,
+# one [[course.exams]] each. (For an exam a website lists by date only, an entry with the same
+# name adds the time.)
+#   name, date     date = "2026-11-18", or with a start time: "2026-12-23 12:00"
+#   end            optional end time, e.g. "15:00"
+#   note, source   optional: details, and a link to where the date comes from
+
+[[course]]
+name = "Data Structures"
+code = "CS 3134"
+instructor = "Dana Rivera"
+meeting_times = "Mon & Wed 1:10–2:25 PM"
+# On Ed this course posts "P4 - Stacks" for "Programming Assignment 4".
+aliases = { P = "Programming Assignment", Midterm = "Exam" }
+
+[[course.exams]]
+name = "Exam 1"
+date = "2026-10-05"
+note = "In class."
+
+[[course.exams]]
+name = "Final Exam"
+date = "2026-12-18 13:10"
+end = "16:00"
+source = "https://canvas.example.edu/courses/12345/assignments/syllabus"
+
+[[course]]
+name = "Discrete Math"
+code = "CS 3203"
+instructor = "Sam Fischer"
+gmail_query = 'subject:"[cs3203]" OR ("CS 3203" OR "CS3203")'

@@ -1,0 +1,89 @@
+{
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "Assignment",
+        "Deadline change",
+        "Exam",
+        "Logistics",
+        "Announcement",
+        "Grades",
+        "Other"
+      ]
+    },
+    "important": {
+      "type": "boolean"
+    },
+    "from_staff": {
+      "type": "boolean"
+    },
+    "related_assignments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "due_stated": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "due_stated"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "new_tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "due": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "Homework",
+              "Project",
+              "Exam",
+              "Quiz",
+              "Reading",
+              "Action item"
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "due",
+          "type"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "title",
+    "summary",
+    "category",
+    "important",
+    "from_staff",
+    "related_assignments",
+    "new_tasks"
+  ],
+  "additionalProperties": false
+}

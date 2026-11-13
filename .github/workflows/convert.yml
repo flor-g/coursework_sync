@@ -1,0 +1,51 @@
+name: Convert lecture
+run-name: Convert lecture ${{ inputs.page_id || '(all requested)' }}
+
+# Started by the "Convert to Markdown" button in Notion (through the Apps Script), or by hand.
+on:
+  workflow_dispatch:
+    inputs:
+      page_id:
+        description: "Notion page id of the lecture (leave empty to convert every requested lecture)"
+        required: false
+        type: string
+
+concurrency:
+  group: convert-${{ inputs.page_id || 'all' }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Install LibreOffice (PowerPoint and Word → PDF)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends libreoffice-impress libreoffice-writer
+      - name: Convert
+        env:
+          CANVAS_TOKEN: ${{ secrets.COURSEWORKTOK }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CONVERT_MODEL: ${{ vars.CONVERT_MODEL }}
+          PAGE_ID: ${{ inputs.page_id }}
+        run: |
+          if [ -z "$CANVAS_TOKEN" ] || [ -z "$NOTION_TOKEN" ]; then
+            echo "::notice::Add the COURSEWORKTOK and NOTION_TOKEN secrets to start syncing (README → Setup)."
+            exit 0
+          fi
+          if [ -n "$PAGE_ID" ]; then
+            python -m scheduleaid convert --page "$PAGE_ID"
+          else
+            python -m scheduleaid convert
+          fi
