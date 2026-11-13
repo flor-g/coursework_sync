@@ -147,6 +147,8 @@ A file is downloaded again only when it changes.
 
 ## Setup
 
+Setup is manual for now; automating it is the top item in [TODO.md](TODO.md).
+
 ### 1. GitHub repository secrets
 
 Add these under Settings → Secrets and variables → Actions:
