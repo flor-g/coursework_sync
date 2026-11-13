@@ -1,6 +1,17 @@
 # coursework_sync
 
-Collects a student's coursework from Canvas, course websites, Ed Discussion and Gmail, and organizes it in Notion and Google Calendar:
+## What it's for
+
+A student's coursework is scattered across platforms: email, Canvas, Ed Discussion and each course's own website. Each has its own interface and its own formats, and the news about one homework can be spread over all four.
+
+coursework_sync unifies that information:
+- **One interface.** Everything lands in one Notion workspace, with deadlines also on one Google Calendar, so there's a single place to look.
+- **One document format.** Whatever the source (a Canvas description, a website PDF, an email, an Ed thread, lecture slides), it becomes the same kind of Notion page, with the same sections and a link back to where it came from.
+- **One item per piece of coursework.** Every update about an assignment or exam is gathered under that item, whatever platform it came from: the instructions and files, the release email, Ed clarifications from staff, and deadline changes.
+
+## What it does
+
+It collects a student's coursework from Canvas, course websites, Ed Discussion and Gmail, and organizes it in Notion and Google Calendar:
 - assignments and exams, with their instructions and files, on a to-do list and a calendar
 - announcements and course emails, summarized by Claude
 - lecture slides, rewritten as readable lecture notes on request
